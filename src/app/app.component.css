@@ -1,0 +1,21 @@
+.container-fluid{
+    background-image: url("../assets/covid19.jpg");
+    max-height: 100%;
+    max-width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.center {
+    margin: auto;
+    width: 40%;
+    padding: 10px;
+    text-align: center;
+  }
+.deco{
+    background-color: white;
+    border: 2px solid black;
+}
+.opt{
+    width: 50%;
+}

@@ -1,0 +1,153 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1" style="font-size: 28px;" ><b>Covid-19 Live Tracker </b></span>
+      </nav>
+    </div>
+  </div>
+  <br>
+  <div class="center">
+    <b><label for="country" style="color: rgb(253, 253, 253); font-size: 22px">Select Country : </label></b>
+    <select id="country" (change)="getcountry($event.target.value)" class="form-control ">
+      <option *ngFor= "let country of sortedcountry">
+        {{country}}
+      </option>
+    </select>
+    <br><br>
+      <button class="btn btn-success" 
+      type="submit" 
+      (click)="getdata()"
+      >Get Covid-19 Data</button>
+  </div>  
+    <br><br>
+    <div *ngIf="ondata">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+            <div class="card-header "><b>Total Confirmed Cases</b></div>
+            <div class="card-body">
+              <h5 class="card-title">{{confirmed}} </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+            <div class="card-header "><b>Total Active Cases</b></div>
+            <div class="card-body">
+              <h5 class="card-title">{{active}} </h5>
+            </div>
+          </div>
+       </div>
+       <div class="col-sm-3">
+          <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+            <div class="card-header "><b>Total Recovered Cases</b></div>
+            <div class="card-body">
+              <h5 class="card-title">{{recovered}} </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+            <div class="card-header "><b>Total Death Cases</b></div>
+            <div class="card-body">
+              <h5 class="card-title">{{deaths}} </h5>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <br><br>
+        <div class="row">
+          <div class="col-sm-3" style="text-align: center;">
+            <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+              <div class="card-header "><b>Cases in last 24 hours</b></div>
+              <div class="card-body">
+                <h5 class="card-title">{{last24hrcase}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3" style="text-align: center;">
+            <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+              <div class="card-header "><b>Recovered in last 24 hours</b></div>
+              <div class="card-body">
+                <h5 class="card-title">{{last24hrrec}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+              <div class="card-header "><b>Recovery Rate</b></div>
+              <div class="card-body">
+                <h5 class="card-title">{{recoveryrate}}%</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3" style="text-align: center;">
+            <div class="card text-white bg-danger mb-3 mx-auto" style="max-width: 18rem; text-align: center;">
+              <div class="card-header "><b>Death Rate</b></div>
+              <div class="card-body">
+                <h5 class="card-title">{{deathrate}}%</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;">
+            <button type="button" 
+            class="btn btn-danger" 
+            (click)="online()"
+            >Daily Rise in Cases</button>
+            <br><br>
+            <div class="chart-wrapper deco" *ngIf="line">
+              <canvas baseChart 
+                  [datasets]="lineChartData" 
+                  [labels]="lineChartLabels" 
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors" 
+                  [legend]="lineChartLegend" 
+                  [chartType]="lineChartType" 
+                  [plugins]="lineChartPlugins"
+                 >
+              </canvas>
+           </div>
+          </div>
+          <div class="col-sm-4" style="text-align: center;">
+            <button type="button" 
+            class="btn btn-success" 
+            (click)="online1()"
+            >Percentage of Daily Recovered Cases </button>
+            <br><br>
+            <div class="chart-wrapper deco" *ngIf="line1">
+              <canvas baseChart 
+                  [datasets]="lineChartData1" 
+                  [labels]="lineChartLabels" 
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors1" 
+                  [legend]="lineChartLegend" 
+                  [chartType]="lineChartType" 
+                  [plugins]="lineChartPlugins">
+              </canvas>
+           </div>
+          </div>
+          <div class="col-sm-4" style="text-align: center;">
+            <button type="button" 
+            class="btn btn-warning" 
+            (click)="onpie()"
+            >Percentage of Daily Death Cases</button>
+            <br><br>
+            <div class="chart-wrapper deco" *ngIf="pie">
+              <canvas baseChart 
+                  [datasets]="lineChartData2" 
+                  [labels]="lineChartLabels" 
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors2" 
+                  [legend]="lineChartLegend" 
+                  [chartType]="lineChartType" 
+                  [plugins]="lineChartPlugins">
+              </canvas>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
